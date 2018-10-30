@@ -3,6 +3,8 @@ package test.pivotal.pal.trackerapi;
 import com.jayway.jsonpath.DocumentContext;
 import io.pivotal.pal.tracker.PalTrackerApplication;
 import io.pivotal.pal.tracker.TimeEntry;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Collection;
 
+
+
 import static com.jayway.jsonpath.JsonPath.parse;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
@@ -36,7 +43,6 @@ public class TimeEntryApiTest {
     public void testCreate() throws Exception {
         ResponseEntity<String> createResponse = restTemplate.postForEntity("/time-entries", timeEntry, String.class);
 
-
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         DocumentContext createJson = parse(createResponse.getBody());
@@ -45,6 +51,7 @@ public class TimeEntryApiTest {
         assertThat(createJson.read("$.userId", Long.class)).isEqualTo(userId);
         assertThat(createJson.read("$.date", String.class)).isEqualTo("2017-01-08");
         assertThat(createJson.read("$.hours", Long.class)).isEqualTo(8);
+
     }
 
     @Test
@@ -54,7 +61,7 @@ public class TimeEntryApiTest {
 
         ResponseEntity<String> listResponse = restTemplate.getForEntity("/time-entries", String.class);
 
-
+        //System.out.println("HERE IS THE LIST RETURN VALUE!!!!!!!!!! " + listResponse.getStatusCode());
         assertThat(listResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext listJson = parse(listResponse.getBody());
