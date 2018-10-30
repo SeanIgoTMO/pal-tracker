@@ -13,6 +13,7 @@ public class TimeEntry {
 
     @Override
     public int hashCode() {
+        //should we be using id?
         int hashValue = Objects.hash(id,projectId,userId,date.getDayOfMonth(),date.getMonthValue(),date.getYear(),hours);
         return hashValue;
     }
