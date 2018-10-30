@@ -11,7 +11,6 @@ import java.util.TreeMap;
 @RestController
 public class EnvController {
 
-
     private HashMap<String,String> env;
 
     @GetMapping("/env")
@@ -19,7 +18,6 @@ public class EnvController {
     {
         return env;
     }
-
 
     public EnvController(
         @Value("${PORT:NOT SET}") String port,
